@@ -8,7 +8,10 @@ module.exports = {
     theme: {
         extend: {
             colors: {
-                purple: "#fff",
+                merah: "#E65F5C",
+                biru: "#2AB7CA",
+                kuning: "#FED766",
+                hijau: "#23F0C7",
             },
         },
     },

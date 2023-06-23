@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\HomeController;
-
+use App\Http\Controllers\MaterialController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,7 +15,8 @@ use App\Http\Controllers\HomeController;
 |
 */
 
+Route::get('/', [MaterialController::class, 'index'])->name('home');
+Route::get('/material/{material_id}', [MaterialController::class, 'details'])->name('material_detail');
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/question', [HomeController::class, 'index'])->name('question');
 Route::post('/test', [TestController::class, 'index'])->name('test');
-Route::post('/insertSingle', [TestController::class, 'insertSingle'])->name('insert-single');

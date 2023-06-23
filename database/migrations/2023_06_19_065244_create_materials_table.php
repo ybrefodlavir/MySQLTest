@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('questions', function (Blueprint $table) {
+        Schema::create('materials', function (Blueprint $table) {
             $table->id();
-            $table->string('question');
-            $table->string('type');
-            $table->string('validation_statement');
-            $table->string('validation_value')->nullable();
-            $table->enum('difficulty', ['easy', 'medium', 'hard']);
-            $table->boolean('is_active')->default(false);
+            $table->string('name');
+            $table->string('description');
+            $table->boolean('is_exam')->default(false);
+            $table->string('path')->nullable();
+            $table->integer('order');
+            $table->string('color')->nullable();
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('questions');
+        Schema::dropIfExists('materials');
     }
 };

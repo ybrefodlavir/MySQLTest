@@ -53,17 +53,18 @@ class TestController extends Controller
             'message' => '',
         ];
 
-        if ($question->type == "insert single" || $question->type == "insert single specific") {
+        if ($question->type == Question::$InsertSingle || $question->type == Question::$InsertSingleSpecific) {
             $query = DB::connection('mysql-test')->table($validation_statement['tableName'])
                 ->selectRaw($validation_statement['selectRaw'])
                 ->whereRaw($validation_statement['whereRaw'])
                 ->first();
-
-            $nullKey = $validation_statement['nullKey'];
-            if ($question->type == "insert single specific" && $query->$nullKey !== null) {
-                $valid['status'] = false;
-                $valid['message'] = $validation_statement['nullKey'] . " must be null";
-                return $valid;
+            if ($question->type == Question::$InsertSingleSpecific) {
+                $nullKey = $validation_statement['nullKey'];
+                if ($query->$nullKey !== null) {
+                    $valid['status'] = false;
+                    $valid['message'] = $validation_statement['nullKey'] . " must be null";
+                    return $valid;
+                }
             }
             foreach ($validation_value as $property => $value) {
                 if ($value !== $query->$property) {
@@ -74,7 +75,7 @@ class TestController extends Controller
                     $valid['status'] = true;
                 }
             }
-        } else if ($question->type == "insert multiple" || $question->type == "insert multiple specific") {
+        } else if ($question->type == Question::$InsertMultiple || $question->type == Question::$InsertMultipleSpecific) {
             $query = DB::connection('mysql-test')->table($validation_statement['tableName'])
                 ->selectRaw($validation_statement['selectRaw'])
                 ->whereRaw($validation_statement['whereRaw'])
@@ -90,7 +91,7 @@ class TestController extends Controller
                     }
                 }
             }
-        } else if ($question->type == "update all") {
+        } else if ($question->type == Question::$UpdateAll) {
             $query = DB::connection('mysql-test')->table($validation_statement['tableName'])
                 ->selectRaw($validation_statement['selectRaw'])
                 ->get();
@@ -105,7 +106,7 @@ class TestController extends Controller
                     }
                 }
             }
-        } else if ($question->type == "update specific") {
+        } else if ($question->type == Question::$UpdateSpecific) {
             $query = DB::connection('mysql-test')->table($validation_statement['tableName'])
                 ->selectRaw($validation_statement['selectRaw'])
                 ->whereRaw($validation_statement['whereRaw'])
@@ -121,7 +122,7 @@ class TestController extends Controller
                     }
                 }
             }
-        } else if ($question->type == "delete specific") {
+        } else if ($question->type == Question::$DeleteSpecific) {
             $query = DB::connection('mysql-test')->table($validation_statement['tableName'])
                 ->selectRaw($validation_statement['selectRaw'])
                 ->whereRaw($validation_statement['whereRaw'])
@@ -133,7 +134,7 @@ class TestController extends Controller
             } else {
                 $valid['status'] = true;
             }
-        } else if ($question->type == "delete all") {
+        } else if ($question->type == Question::$DeleteAll) {
             $query = DB::connection('mysql-test')->table($validation_statement['tableName'])
                 ->get();
             if (!$query->empty()) {
